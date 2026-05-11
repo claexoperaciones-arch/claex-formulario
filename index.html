@@ -717,7 +717,7 @@
     btn.disabled=true; btn.textContent='Enviando...';
 
     /* ⚠️ REEMPLAZA CON TU URL DE GOOGLE APPS SCRIPT */
-    const SCRIPT_URL='PEGA_AQUI_TU_URL_DEL_APPS_SCRIPT';
+    const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwuUL0F1JpUI1CRXit7CZMHqw-TsB2zb5fK0kwYIuKBz95sIQLZyPpf0ZAA0GeZv5tc/exec';
 
     fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
     .then(()=>{
