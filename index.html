@@ -5,470 +5,304 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CLAEX · Solicitud de Servicio</title>
   <style>
-    /* ==============================
-       RESET Y BASE
-    ============================== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #F4F6FB;
-      color: #1a1a2e;
-      min-height: 100vh;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F4F6FB; color: #1a1a2e; min-height: 100vh; }
+    .claex-wrap { max-width: 520px; margin: 0 auto; padding-bottom: 2.5rem; }
 
-    /* ==============================
-       WRAPPER
-    ============================== */
-    .claex-wrap {
-      max-width: 520px;
-      margin: 0 auto;
-      padding-bottom: 2.5rem;
-    }
+    /* HEADER */
+    .claex-header { background: #0A1F44; padding: 1.5rem 1.5rem 1.2rem; text-align: center; border-radius: 0 0 24px 24px; margin-bottom: 1.2rem; }
+    .claex-tagline { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 12px; letter-spacing: 1px; text-transform: uppercase; }
 
-    /* ==============================
-       HEADER
-    ============================== */
-    .claex-header {
-      background: #0A1F44;
-      padding: 1.8rem 1.5rem 1.5rem;
-      text-align: center;
-      border-radius: 0 0 24px 24px;
-      margin-bottom: 1.5rem;
-    }
-    .claex-logo {
-      font-size: 32px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 4px;
-    }
-    .claex-logo span { color: #FF7A00; }
-    .claex-tagline {
-      font-size: 12px;
-      color: rgba(255,255,255,0.55);
-      margin-top: 4px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .claex-subtitle {
-      font-size: 13px;
-      color: rgba(255,255,255,0.75);
-      margin-top: 10px;
-    }
+    /* PROGRESS */
+    .progress-wrap { margin: 0 1rem 1.2rem; }
+    .progress-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 8px; }
+    .step-item { text-align: center; }
+    .step-circle { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #E2E6EF; background: #fff; color: #bbb; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; transition: all 0.2s; }
+    .step-circle.active { border-color: #FF7A00; background: #FF7A00; color: #fff; }
+    .step-circle.done { border-color: #1D9E75; background: #1D9E75; color: #fff; }
+    .step-label { font-size: 10px; color: #bbb; font-weight: 500; }
+    .step-label.active { color: #FF7A00; font-weight: 600; }
+    .step-label.done { color: #1D9E75; }
+    .progress-bar-track { height: 3px; background: #E2E6EF; border-radius: 3px; }
+    .progress-bar-fill { height: 3px; background: linear-gradient(90deg, #1D9E75, #FF7A00); border-radius: 3px; transition: width 0.3s ease; }
 
-    /* ==============================
-       CARDS
-    ============================== */
-    .form-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 1.25rem;
-      margin: 0 1rem 1rem;
-      box-shadow: 0 2px 8px rgba(10,31,68,0.07);
-    }
+    /* CARDS */
+    .form-card { background: #fff; border-radius: 16px; padding: 1.25rem; margin: 0 1rem 1rem; box-shadow: 0 2px 8px rgba(10,31,68,0.07); display: none; }
+    .form-card.visible { display: block; }
+    .section-title { font-size: 11px; font-weight: 600; color: #FF7A00; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,122,0,0.2); }
 
-    .section-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: #FF7A00;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255,122,0,0.2);
-    }
-
-    /* ==============================
-       FIELDS
-    ============================== */
+    /* FIELDS */
     .field { margin-bottom: 14px; }
     .field:last-child { margin-bottom: 0; }
-
-    .field label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 6px;
-    }
-    .field label .ico { font-size: 14px; width: 18px; text-align: center; }
+    .field label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; }
     .req { color: #FF7A00; }
+    .field input, .field select, .field textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #E2E6EF; border-radius: 10px; font-size: 14px; color: #1a1a2e; background: #F8FAFD; outline: none; transition: border-color 0.15s; font-family: inherit; appearance: none; -webkit-appearance: none; text-transform: uppercase; }
+    .field input::placeholder, .field textarea::placeholder { text-transform: none; color: #bbb; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: #0A1F44; background: #fff; }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230A1F44' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; text-transform: none; }
+    .field select option { text-transform: none; }
+    .field textarea { resize: vertical; min-height: 70px; }
+    .field-error { font-size: 11px; color: #e24b4a; margin-top: 4px; display: none; }
+    .field input.invalid, .field select.invalid { border-color: #e24b4a; background: #fff5f5; }
 
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid #E2E6EF;
-      border-radius: 10px;
-      font-size: 14px;
-      color: #1a1a2e;
-      background: #F8FAFD;
-      outline: none;
-      transition: border-color 0.15s, background 0.15s;
-      font-family: inherit;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: #0A1F44;
-      background: #fff;
-    }
-    .field select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230A1F44' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
-    }
-    .field textarea { resize: vertical; min-height: 80px; }
+    /* CIUDAD BOTONES */
+    .ciudad-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .ciudad-btn { border: 1.5px solid #E2E6EF; border-radius: 12px; padding: 12px 6px; text-align: center; cursor: pointer; background: #F8FAFD; transition: all 0.15s; user-select: none; }
+    .ciudad-btn:hover { border-color: #0A1F44; }
+    .ciudad-btn .c-name { font-size: 12px; font-weight: 600; color: #1a1a2e; display: block; line-height: 1.3; }
+    .ciudad-btn .c-sub { font-size: 10px; color: #aaa; display: block; margin-top: 2px; }
+    .ciudad-btn.active { border-color: #0A1F44; background: #0A1F44; }
+    .ciudad-btn.active .c-name { color: #fff; }
+    .ciudad-btn.active .c-sub { color: rgba(255,255,255,0.5); }
 
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    /* TOGGLE */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1.5px solid #E2E6EF; border-radius: 10px; background: #F8FAFD; cursor: pointer; transition: all 0.15s; }
+    .toggle-row:hover { border-color: #0A1F44; }
+    .toggle-label { display: flex; align-items: center; gap: 10px; }
+    .switch { position: relative; width: 46px; height: 26px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider-sw { position: absolute; cursor: pointer; inset: 0; background: #CBD0DA; border-radius: 26px; transition: 0.2s; }
+    .slider-sw:before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+    .switch input:checked + .slider-sw { background: #0A1F44; }
+    .switch input:checked + .slider-sw:before { transform: translateX(20px); }
 
-    .field-error {
-      font-size: 11px;
-      color: #e24b4a;
-      margin-top: 4px;
-      display: none;
-    }
-    .field input.invalid,
-    .field select.invalid {
-      border-color: #e24b4a;
-      background: #fff5f5;
-    }
-
-    /* ==============================
-       TIPOS DE SERVICIO
-    ============================== */
-    .service-options {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .svc-btn {
-      border: 1.5px solid #E2E6EF;
-      border-radius: 12px;
-      padding: 12px 8px;
-      text-align: center;
-      cursor: pointer;
-      background: #F8FAFD;
-      transition: all 0.15s;
-      user-select: none;
-    }
+    /* SERVICIOS */
+    .service-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .svc-btn { border: 1.5px solid #E2E6EF; border-radius: 12px; padding: 12px 8px; text-align: center; cursor: pointer; background: #F8FAFD; transition: all 0.15s; user-select: none; }
     .svc-btn:hover { border-color: #0A1F44; }
     .svc-btn .svc-icon { font-size: 20px; margin-bottom: 4px; display: block; }
-    .svc-btn .svc-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: #1a1a2e;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .svc-btn .svc-time {
-      font-size: 10px;
-      color: #888;
-      display: block;
-    }
-    .svc-btn.active {
-      border-color: #0A1F44;
-      background: #0A1F44;
-    }
+    .svc-btn .svc-name { font-size: 13px; font-weight: 600; color: #1a1a2e; display: block; margin-bottom: 2px; }
+    .svc-btn .svc-time { font-size: 10px; color: #888; display: block; }
+    .svc-btn.active { border-color: #0A1F44; background: #0A1F44; }
     .svc-btn.active .svc-name { color: #fff; }
     .svc-btn.active .svc-time { color: rgba(255,255,255,0.55); }
     .svc-btn.active .svc-icon { filter: brightness(0) invert(1); }
 
-    /* ==============================
-       TOGGLE LLUVIA
-    ============================== */
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border: 1.5px solid #E2E6EF;
-      border-radius: 10px;
-      background: #F8FAFD;
-      cursor: pointer;
-      transition: border-color 0.15s;
-    }
-    .toggle-row:hover { border-color: #0A1F44; }
-    .toggle-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: #1a1a2e;
-      font-weight: 500;
-    }
-    .switch {
-      position: relative;
-      width: 46px;
-      height: 26px;
-      flex-shrink: 0;
-    }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider-sw {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: #CBD0DA;
-      border-radius: 26px;
-      transition: 0.2s;
-    }
-    .slider-sw:before {
-      content: '';
-      position: absolute;
-      width: 20px; height: 20px;
-      left: 3px; top: 3px;
-      background: #fff;
-      border-radius: 50%;
-      transition: 0.2s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-    }
-    .switch input:checked + .slider-sw { background: #0A1F44; }
-    .switch input:checked + .slider-sw:before { transform: translateX(20px); }
-
-    /* ==============================
-       PRECIO EN TIEMPO REAL
-    ============================== */
-    .precio-card {
-      background: #0A1F44;
-      border-radius: 16px;
-      padding: 1.2rem 1.25rem;
-      margin: 0 1rem 1rem;
-    }
-    .precio-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 14px;
-      font-weight: 600;
-    }
-    .precio-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      color: rgba(255,255,255,0.72);
-      margin-bottom: 10px;
-    }
-    .precio-row.total {
-      border-top: 1px solid rgba(255,255,255,0.12);
-      padding-top: 12px;
-      margin-top: 4px;
-      margin-bottom: 0;
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-    }
+    /* PRECIO */
+    .precio-card { background: #0A1F44; border-radius: 14px; padding: 1rem 1.25rem; margin-top: 14px; }
+    .precio-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.5); margin-bottom: 12px; font-weight: 600; }
+    .precio-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: rgba(255,255,255,0.72); margin-bottom: 8px; }
+    .precio-row.total { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 10px; margin-top: 4px; margin-bottom: 0; font-size: 20px; font-weight: 700; color: #fff; }
     .precio-row.total .amount { color: #FF7A00; }
     .precio-row .amount { color: #fff; font-weight: 600; }
-    .precio-placeholder {
-      font-size: 13px;
-      color: rgba(255,255,255,0.38);
-      text-align: center;
-      padding: 0.4rem 0;
-    }
-    .lluvia-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255,122,0,0.18);
-      color: #FF7A00;
-      border-radius: 6px;
-      padding: 2px 8px;
-      font-size: 12px;
-      font-weight: 600;
-    }
+    .precio-placeholder { font-size: 13px; color: rgba(255,255,255,0.38); text-align: center; padding: 0.3rem 0; }
+    .badge-lluvia { background: rgba(255,122,0,0.18); color: #FF7A00; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
 
-    /* ==============================
-       BOTÓN ENVIAR
-    ============================== */
-    .btn-enviar {
-      display: block;
-      width: calc(100% - 2rem);
-      margin: 0 1rem;
-      padding: 15px;
-      background: #FF7A00;
-      color: #fff;
-      border: none;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      transition: opacity 0.15s, transform 0.1s;
-      font-family: inherit;
-    }
-    .btn-enviar:hover { opacity: 0.9; }
-    .btn-enviar:active { transform: scale(0.98); }
-    .btn-enviar:disabled { opacity: 0.4; cursor: not-allowed; }
+    /* DIRECCIÓN DESPLEGABLE */
+    .dir-field { display: none; margin-top: 10px; animation: fadeIn 0.2s ease; }
+    .dir-field.visible { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ==============================
-       MENSAJE ÉXITO
-    ============================== */
-    .success-msg {
-      display: none;
-      background: #fff;
-      border: 1.5px solid #2ecc71;
-      border-radius: 16px;
-      padding: 1.5rem 1.25rem;
-      margin: 1rem 1rem 0;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(46,204,113,0.15);
-    }
-    .success-msg .s-icon { font-size: 36px; margin-bottom: 10px; }
-    .success-msg h3 { font-size: 18px; color: #1a7a3e; margin-bottom: 6px; }
+    /* RESUMEN */
+    .resumen-card { background: #fff; border-radius: 16px; padding: 1.25rem; margin: 0 1rem 1rem; box-shadow: 0 2px 8px rgba(10,31,68,0.07); }
+    .resumen-section { margin-bottom: 16px; }
+    .resumen-section-title { font-size: 10px; font-weight: 700; color: #FF7A00; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #F0F0F0; }
+    .resumen-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 0.5px solid #F8F8F8; }
+    .resumen-item:last-child { border-bottom: none; }
+    .resumen-label { font-size: 12px; color: #999; flex-shrink: 0; width: 120px; }
+    .resumen-value { font-size: 12px; font-weight: 600; color: #1a1a2e; text-align: right; text-transform: uppercase; flex: 1; }
+    .resumen-total-box { background: #0A1F44; border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; margin: 16px 0; }
+    .resumen-total-box .rt-label { color: rgba(255,255,255,0.7); font-size: 13px; }
+    .resumen-total-box .rt-sub { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 2px; }
+    .resumen-total-box .rt-valor { color: #FF7A00; font-size: 26px; font-weight: 800; }
+
+    /* CONDICIONES */
+    .condiciones-btn { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1.5px solid #E2E6EF; border-radius: 10px; background: #F8FAFD; cursor: pointer; transition: all 0.15s; margin-bottom: 10px; }
+    .condiciones-btn:hover { border-color: #0A1F44; }
+    .condiciones-btn span { font-size: 13px; font-weight: 600; color: #0A1F44; }
+    .condiciones-btn .arrow { font-size: 12px; color: #aaa; transition: transform 0.2s; }
+    .condiciones-btn.open .arrow { transform: rotate(180deg); }
+    .condiciones-panel { display: none; background: #F8FAFD; border: 1px solid #E2E6EF; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+    .condiciones-panel.visible { display: block; }
+    .condiciones-panel p { font-size: 12px; color: #555; line-height: 1.7; margin-bottom: 8px; }
+    .condiciones-panel p:last-child { margin-bottom: 0; }
+
+    /* CHECKBOX ACEPTAR */
+    .aceptar-wrap { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1.5px solid #E2E6EF; border-radius: 10px; background: #F8FAFD; cursor: pointer; transition: all 0.15s; }
+    .aceptar-wrap.aceptado { border-color: #1D9E75; background: #f0fdf8; }
+    .aceptar-wrap input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; accent-color: #1D9E75; cursor: pointer; }
+    .aceptar-wrap label { font-size: 13px; color: #555; cursor: pointer; line-height: 1.4; }
+    .aceptar-wrap.aceptado label { color: #085041; font-weight: 500; }
+
+    /* NAV BOTONES */
+    .nav-btns { display: flex; gap: 10px; margin: 0 1rem; }
+    .btn-back { flex: 1; padding: 13px; background: #fff; color: #0A1F44; border: 1.5px solid #E2E6EF; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .btn-back:hover { border-color: #0A1F44; }
+    .btn-next { flex: 2; padding: 13px; background: #FF7A00; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+    .btn-next:hover { opacity: 0.9; }
+    .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* ÉXITO */
+    .success-msg { display: none; background: #fff; border: 1.5px solid #2ecc71; border-radius: 16px; padding: 1.5rem 1.25rem; margin: 1rem 1rem 0; text-align: center; box-shadow: 0 4px 12px rgba(46,204,113,0.15); }
+    .success-msg .s-icon { font-size: 44px; margin-bottom: 12px; }
+    .success-msg h3 { font-size: 20px; color: #1a7a3e; margin-bottom: 8px; font-weight: 700; }
     .success-msg p { font-size: 14px; color: #555; line-height: 1.6; }
-    .success-msg .ref {
-      display: inline-block;
-      margin-top: 10px;
-      background: #f0fff6;
-      color: #1a7a3e;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 8px;
-      letter-spacing: 1px;
-    }
+    .success-msg .ref { display: inline-block; margin-top: 12px; background: #f0fff6; color: #1a7a3e; font-size: 14px; font-weight: 700; padding: 8px 20px; border-radius: 8px; letter-spacing: 1px; }
+    .success-msg .pago-info { margin-top: 16px; background: #FFF8F0; border: 1px solid #FFD8A8; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #7A4000; line-height: 1.6; }
 
-    /* ==============================
-       FOOTER
-    ============================== */
-    .claex-footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 11px;
-      color: #aaa;
-      padding: 0 1rem;
-    }
+    .claex-footer { text-align: center; margin-top: 1.5rem; font-size: 11px; color: #aaa; padding: 0 1rem; }
 
-    /* ==============================
-       RESPONSIVE
-    ============================== */
     @media (max-width: 380px) {
-      .field-row { grid-template-columns: 1fr; }
       .service-options { grid-template-columns: 1fr; }
+      .ciudad-options { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-
 <div class="claex-wrap">
 
- <!-- ENCABEZADO -->
+  <!-- HEADER -->
   <div class="claex-header">
-  <div style="color:#fff;font-size:36px;font-weight:800;letter-spacing:4px;display:inline-block;position:relative;">
-  CLAEX
-  <div style="position:absolute;bottom:-4px;left:0;right:0;height:3px;background:#FF7A00;border-radius:2px;"></div>
-</div>
-    <div class="claex-tagline">Servicio de paquetería · Barranquilla</div>
-    <div class="claex-subtitle">Rápido, seguro y al mejor precio</div>
+    <div style="color:#fff;font-size:36px;font-weight:800;letter-spacing:4px;display:inline-block;position:relative;">
+      CLAEX
+      <div style="position:absolute;bottom:-4px;left:0;right:0;height:3px;background:#FF7A00;border-radius:2px;"></div>
+    </div>
+    <div class="claex-tagline">Servicio de paquetería · Barranquilla & Soledad</div>
   </div>
 
-  <!-- SECCIÓN: Datos del cliente -->
-  <div class="form-card">
-    <div class="section-title">Datos del cliente</div>
-
-    <div class="field-row">
-      <div class="field">
-        <label><span class="ico">👤</span> Nombre <span class="req">*</span></label>
-        <input type="text" id="nombre" placeholder="Nombre completo" autocomplete="name" />
-        <div class="field-error" id="err-nombre">Este campo es obligatorio</div>
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="step-item">
+        <div class="step-circle active" id="sc1">1</div>
+        <div class="step-label active" id="sl1">Remitente</div>
       </div>
-      <div class="field">
-        <label><span class="ico">📱</span> Teléfono <span class="req">*</span></label>
-        <input type="tel" id="telefono" placeholder="300 000 0000" autocomplete="tel" />
-        <div class="field-error" id="err-telefono">Este campo es obligatorio</div>
+      <div class="step-item">
+        <div class="step-circle" id="sc2">2</div>
+        <div class="step-label" id="sl2">Destinatario</div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc3">3</div>
+        <div class="step-label" id="sl3">Envío</div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc4">4</div>
+        <div class="step-label" id="sl4">Resumen</div>
       </div>
     </div>
-
-    <div class="field">
-      <label><span class="ico">🏘️</span> Barrio <span style="font-size:10px;color:#bbb;font-weight:400;">(opcional)</span></label>
-      <input type="text" id="barrio" placeholder="Ej: El Prado, Bellavista, Manga..." />
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-fill" style="width:12%;"></div>
     </div>
   </div>
 
-  <!-- SECCIÓN: Direcciones -->
-  <div class="form-card">
-    <div class="section-title">Direcciones</div>
+  <!-- PASO 1: REMITENTE -->
+  <div class="form-card visible" id="paso1">
+    <div class="section-title">Datos del remitente</div>
+    <div class="field">
+      <label>Nombre completo <span class="req">*</span></label>
+      <input type="text" id="rem-nombre" placeholder="Tu nombre completo" autocomplete="name" />
+      <div class="field-error" id="err-rem-nombre">Campo obligatorio</div>
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label>Teléfono de contacto <span class="req">*</span></label>
+      <input type="tel" id="rem-telefono" placeholder="300 000 0000" autocomplete="tel" style="text-transform:none;" />
+      <div class="field-error" id="err-rem-telefono">Campo obligatorio</div>
+    </div>
+  </div>
+
+  <!-- PASO 2: DESTINATARIO -->
+  <div class="form-card" id="paso2">
+    <div class="section-title">Datos del destinatario</div>
+    <div class="field">
+      <label>Nombre completo <span class="req">*</span></label>
+      <input type="text" id="dest-nombre" placeholder="Nombre de quien recibe" />
+      <div class="field-error" id="err-dest-nombre">Campo obligatorio</div>
+    </div>
+    <div class="field">
+      <label>Teléfono de contacto <span class="req">*</span></label>
+      <input type="tel" id="dest-telefono" placeholder="300 000 0000" style="text-transform:none;" />
+      <div class="field-error" id="err-dest-telefono">Campo obligatorio</div>
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label>Indicación especial <span style="font-size:10px;color:#bbb;font-weight:400;">(opcional)</span></label>
+      <input type="text" id="dest-indicacion" placeholder="Ej: Llamar antes de llegar" />
+    </div>
+  </div>
+
+  <!-- PASO 3: ENVÍO Y PRECIO -->
+  <div class="form-card" id="paso3">
+    <div class="section-title">Detalles del envío</div>
 
     <div class="field">
-      <label><span class="ico">📍</span> Dirección de Recogida <span class="req">*</span></label>
-      <input type="text" id="dir-recogida" placeholder="Calle, carrera, número o punto de referencia" />
-      <div class="field-error" id="err-recogida">Este campo es obligatorio</div>
+      <label>Ciudad <span class="req">*</span></label>
+      <div class="ciudad-options">
+        <div class="ciudad-btn" data-ciudad="Barranquilla" onclick="selectCiudad(this)">
+          <span class="c-name">Barranquilla</span>
+        </div>
+        <div class="ciudad-btn" data-ciudad="Soledad" onclick="selectCiudad(this)">
+          <span class="c-name">Soledad</span>
+        </div>
+        <div class="ciudad-btn" data-ciudad="Entre ciudades" onclick="selectCiudad(this)">
+          <span class="c-name">Entre ciudades</span>
+          <span class="c-sub">BQ ↔ Soledad</span>
+        </div>
+      </div>
+      <input type="hidden" id="ciudad" value="" />
+      <div class="field-error" id="err-ciudad">Selecciona una ciudad</div>
     </div>
 
     <div class="field">
-      <label><span class="ico">🏁</span> Dirección de Entrega <span class="req">*</span></label>
-      <input type="text" id="dir-entrega" placeholder="Calle, carrera, número o punto de referencia" />
-      <div class="field-error" id="err-entrega">Este campo es obligatorio</div>
-    </div>
-
-    <div class="field">
-      <label><span class="ico">📍</span> Zona de Destino <span class="req">*</span></label>
-      <select id="zona" onchange="calcularPrecio()">
-        <option value="">-- Selecciona la zona de destino --</option>
-        <option value="Riomar">Riomar</option>
-        <option value="Norte – Centro Histórico">Norte – Centro Histórico</option>
-        <option value="Metropolitana">Metropolitana</option>
-        <option value="Suroriente">Suroriente</option>
-        <option value="Suroccidente">Suroccidente</option>
+      <label>Zona de origen <span class="req">*</span></label>
+      <select id="zona-origen" onchange="onOrigenChange()">
+        <option value="">-- Selecciona primero la ciudad --</option>
       </select>
-      <div class="field-error" id="err-zona">Selecciona una zona de destino</div>
-    </div>
-  </div>
-
-  <!-- SECCIÓN: Tipo de servicio -->
-  <div class="form-card">
-    <div class="section-title">Tipo de servicio</div>
-
-    <div class="service-options">
-      <div class="svc-btn" data-svc="Estándar" onclick="selectSvc(this)">
-        <span class="svc-icon">📦</span>
-        <span class="svc-name">Estándar</span>
-        <span class="svc-time">3 – 4 horas</span>
-      </div>
-      <div class="svc-btn" data-svc="Express" onclick="selectSvc(this)">
-        <span class="svc-icon">🚀</span>
-        <span class="svc-name">Express</span>
-        <span class="svc-time">60 – 90 min</span>
-      </div>
-      <div class="svc-btn" data-svc="Urgente" onclick="selectSvc(this)">
-        <span class="svc-icon">⚡</span>
-        <span class="svc-name">Urgente</span>
-        <span class="svc-time">30 – 45 min</span>
+      <div class="field-error" id="err-origen">Selecciona zona de origen</div>
+      <div class="dir-field" id="dir-recogida-wrap">
+        <label style="margin-top:0;margin-bottom:6px;">Dirección de recogida <span class="req">*</span></label>
+        <input type="text" id="dir-recogida" placeholder="Calle, carrera, número o referencia" />
+        <div class="field-error" id="err-recogida">Campo obligatorio</div>
       </div>
     </div>
-    <!-- Campo oculto para capturar el valor -->
-    <input type="hidden" id="servicio" value="" />
-    <div class="field-error" id="err-servicio" style="margin-top:8px;">Selecciona un tipo de servicio</div>
 
-    <!-- Toggle lluvia -->
-    <div style="margin-top: 16px;">
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">
-        <span style="font-size:14px;">🌧️</span> Condición climática
-      </label>
+    <div class="field">
+      <label>Observaciones <span style="font-size:10px;color:#bbb;font-weight:400;">(opcional)</span></label>
+      <textarea id="observaciones" placeholder="Instrucciones especiales, descripción del paquete..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Zona de destino <span class="req">*</span></label>
+      <select id="zona-destino" onchange="onDestinoChange()">
+        <option value="">-- Selecciona primero zona de origen --</option>
+      </select>
+      <div class="field-error" id="err-destino">Selecciona zona de destino</div>
+      <div class="dir-field" id="dir-entrega-wrap">
+        <label style="margin-top:0;margin-bottom:6px;">Dirección de entrega <span class="req">*</span></label>
+        <input type="text" id="dir-entrega" placeholder="Calle, carrera, número o referencia" />
+        <div class="field-error" id="err-entrega">Campo obligatorio</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tipo de servicio <span class="req">*</span></label>
+      <div class="service-options">
+        <div class="svc-btn" data-svc="Estándar" onclick="selectSvc(this)">
+          <span class="svc-icon">📦</span>
+          <span class="svc-name">Estándar</span>
+          <span class="svc-time">3 – 4 horas</span>
+        </div>
+        <div class="svc-btn" data-svc="Express" onclick="selectSvc(this)">
+          <span class="svc-icon">🚀</span>
+          <span class="svc-name">Express</span>
+          <span class="svc-time">60 – 90 min</span>
+        </div>
+        <div class="svc-btn" data-svc="Urgente" onclick="selectSvc(this)">
+          <span class="svc-icon">⚡</span>
+          <span class="svc-name">Urgente</span>
+          <span class="svc-time">30 – 45 min</span>
+        </div>
+      </div>
+      <input type="hidden" id="servicio" value="" />
+      <div class="field-error" id="err-servicio" style="margin-top:8px;">Selecciona un tipo de servicio</div>
+    </div>
+
+    <div class="field" style="margin-bottom:0;">
+      <label>Condición climática</label>
       <label class="toggle-row" for="lluvia">
         <div class="toggle-label">
-          <span id="lluvia-icon" style="font-size:22px;">☀️</span>
           <div>
-            <div id="lluvia-text" style="font-weight:600;">Sin lluvia</div>
-            <div id="lluvia-sub" style="font-size:11px;color:#888;">Sin recargo adicional</div>
+            <div style="font-weight:600;font-size:14px;color:#1a1a2e;" id="lluvia-text">Sin lluvia</div>
+            <div style="font-size:11px;color:#888;" id="lluvia-sub">Sin recargo adicional</div>
           </div>
         </div>
         <label class="switch">
@@ -477,318 +311,426 @@
         </label>
       </label>
     </div>
-  </div>
 
-  <!-- SECCIÓN: Observaciones -->
-  <div class="form-card">
-    <div class="section-title">Observaciones</div>
-    <div class="field" style="margin:0;">
-      <label><span class="ico">📝</span> Notas adicionales <span style="font-size:10px;color:#bbb;font-weight:400;">(opcional)</span></label>
-      <textarea id="observaciones" placeholder="Instrucciones especiales, descripción del paquete, referencias de ubicación..."></textarea>
+    <div class="precio-card">
+      <div class="precio-title">Resumen de cobro</div>
+      <div id="precio-content">
+        <div class="precio-placeholder">Selecciona ciudad, zonas y servicio</div>
+      </div>
     </div>
   </div>
 
-  <!-- PRECIO EN TIEMPO REAL -->
-  <div class="precio-card">
-    <div class="precio-title">💰 Resumen de cobro</div>
-    <div id="precio-content">
-      <div class="precio-placeholder">Selecciona zona y tipo de servicio para ver el precio</div>
+  <!-- PASO 4: RESUMEN Y CONDICIONES -->
+  <div class="form-card" id="paso4">
+    <div class="section-title">Resumen del pedido</div>
+
+    <!-- Remitente -->
+    <div class="resumen-section">
+      <div class="resumen-section-title">Remitente</div>
+      <div class="resumen-item"><span class="resumen-label">Nombre</span><span class="resumen-value" id="r-rem-nombre">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Teléfono</span><span class="resumen-value" id="r-rem-tel">—</span></div>
+    </div>
+
+    <!-- Destinatario -->
+    <div class="resumen-section">
+      <div class="resumen-section-title">Destinatario</div>
+      <div class="resumen-item"><span class="resumen-label">Nombre</span><span class="resumen-value" id="r-dest-nombre">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Teléfono</span><span class="resumen-value" id="r-dest-tel">—</span></div>
+      <div class="resumen-item" id="r-indicacion-row"><span class="resumen-label">Indicación</span><span class="resumen-value" id="r-indicacion">—</span></div>
+    </div>
+
+    <!-- Envío -->
+    <div class="resumen-section">
+      <div class="resumen-section-title">Detalles del envío</div>
+      <div class="resumen-item"><span class="resumen-label">Ciudad</span><span class="resumen-value" id="r-ciudad">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Zona origen</span><span class="resumen-value" id="r-origen">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Recogida</span><span class="resumen-value" id="r-recogida">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Zona destino</span><span class="resumen-value" id="r-destino">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Entrega</span><span class="resumen-value" id="r-entrega">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Servicio</span><span class="resumen-value" id="r-servicio">—</span></div>
+      <div class="resumen-item"><span class="resumen-label">Lluvia</span><span class="resumen-value" id="r-lluvia">—</span></div>
+      <div class="resumen-item" id="r-obs-row"><span class="resumen-label">Observaciones</span><span class="resumen-value" id="r-obs">—</span></div>
+    </div>
+
+    <!-- Total -->
+    <div class="resumen-total-box">
+      <div>
+        <div class="rt-label">Total a pagar</div>
+        <div class="rt-sub">Pago al momento de la recogida</div>
+      </div>
+      <div class="rt-valor" id="r-total">—</div>
+    </div>
+
+    <!-- Condiciones -->
+    <div class="condiciones-btn" id="condiciones-btn" onclick="toggleCondiciones()">
+      <span>Ver condiciones del servicio</span>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="condiciones-panel" id="condiciones-panel">
+      <p>El pago del servicio se realiza al momento de la recogida del paquete. Los métodos aceptados son efectivo, Nequi, Daviplata y Bancolombia.</p>
+      <p>Los tiempos de entrega son estimados y pueden variar por condiciones de tráfico, clima o situaciones de fuerza mayor. CLAEX no garantiza tiempos exactos de entrega.</p>
+      <p>En condiciones de lluvia se aplica un recargo adicional según la zona, el cual es informado al cliente antes de confirmar el servicio.</p>
+      <p>El remitente declara que el contenido del paquete es legal y no representa riesgo para el mensajero ni terceros. CLAEX no transporta dinero en efectivo, documentos de valor, armas ni sustancias ilegales.</p>
+      <p>CLAEX se responsabiliza por el paquete desde el momento de la recogida hasta la entrega en el destino indicado. En caso de pérdida o daño, la responsabilidad máxima corresponde al valor del servicio pagado.</p>
+      <p>Una vez despachado el mensajero, no es posible cancelar el servicio ni modificar las direcciones de recogida o entrega.</p>
+      <p>Para novedades urgentes durante el proceso de entrega, el equipo CLAEX estará disponible para brindarte atención oportuna.</p>
+    </div>
+
+    <!-- Aceptar condiciones -->
+    <div class="aceptar-wrap" id="aceptar-wrap">
+      <input type="checkbox" id="acepto" onchange="toggleAcepto()" />
+      <label for="acepto">He leído y acepto las condiciones del servicio CLAEX</label>
     </div>
   </div>
 
-  <!-- BOTÓN ENVIAR -->
-  <button class="btn-enviar" id="btn-enviar" onclick="enviarFormulario()">
-    📤 Enviar Solicitud
-  </button>
+  <!-- NAV -->
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-back" id="btn-back" onclick="pasoAnterior()" style="display:none;">← Atrás</button>
+    <button class="btn-next" id="btn-next" onclick="pasoSiguiente()">Continuar →</button>
+  </div>
 
-  <!-- MENSAJE DE ÉXITO -->
+  <!-- ÉXITO -->
   <div class="success-msg" id="success-msg">
     <div class="s-icon">✅</div>
     <h3>¡Solicitud enviada!</h3>
-    <p>Tu pedido fue registrado exitosamente.<br>Te contactaremos al número registrado en breve.</p>
+    <p>Tu pedido fue registrado exitosamente.<br>En breve nos comunicaremos contigo para coordinar la recogida.</p>
     <div class="ref" id="success-ref">N/A</div>
+    <div class="pago-info">
+      💳 Recuerda que el pago se realiza al momento de la recogida.<br>
+      Métodos aceptados: Efectivo · Nequi · Daviplata · Bancolombia
+    </div>
   </div>
 
-  <div class="claex-footer">
-    CLAEX · Barranquilla, Colombia · Todos los derechos reservados
-  </div>
-
-</div><!-- /.claex-wrap -->
+  <div class="claex-footer">CLAEX · Barranquilla & Soledad · Todos los derechos reservados</div>
+</div>
 
 <script>
-  /* ============================================================
-     TABLA DE PRECIOS
-     Formato: zona → { servicio: precio, lluvia: recargo }
-  ============================================================ */
   const PRECIOS = {
-    "Riomar":                   { "Estándar": 7000,  "Express": 11500, "Urgente": 15500, lluvia: 1500 },
-    "Norte – Centro Histórico": { "Estándar": 8000,  "Express": 11000, "Urgente": 15000, lluvia: 1500 },
-    "Metropolitana":            { "Estándar": 9000,  "Express": 12500, "Urgente": 16500, lluvia: 2000 },
-    "Suroriente":               { "Estándar": 10000, "Express": 14000, "Urgente": 17500, lluvia: 2500 },
-    "Suroccidente":             { "Estándar": 10500, "Express": 14500, "Urgente": 18000, lluvia: 2500 },
+    "Barranquilla": {
+      "Riomar": {
+        "Riomar":                   { "Estándar":6000,  "Express":9500,  "Urgente":13000, lluvia:1500 },
+        "Norte – Centro Histórico": { "Estándar":7500,  "Express":11000, "Urgente":15000, lluvia:1500 },
+        "Metropolitana":            { "Estándar":9000,  "Express":12500, "Urgente":16500, lluvia:2000 },
+        "Suroriente":               { "Estándar":11000, "Express":15000, "Urgente":19000, lluvia:2500 },
+        "Suroccidente":             { "Estándar":12000, "Express":16000, "Urgente":20000, lluvia:2500 },
+      },
+      "Norte – Centro Histórico": {
+        "Riomar":                   { "Estándar":7500,  "Express":11000, "Urgente":15000, lluvia:1500 },
+        "Norte – Centro Histórico": { "Estándar":6000,  "Express":9500,  "Urgente":13000, lluvia:1500 },
+        "Metropolitana":            { "Estándar":8500,  "Express":12000, "Urgente":16000, lluvia:2000 },
+        "Suroriente":               { "Estándar":10500, "Express":14500, "Urgente":18500, lluvia:2500 },
+        "Suroccidente":             { "Estándar":11500, "Express":15500, "Urgente":19500, lluvia:2500 },
+      },
+      "Metropolitana": {
+        "Riomar":                   { "Estándar":9000,  "Express":12500, "Urgente":16500, lluvia:2000 },
+        "Norte – Centro Histórico": { "Estándar":8500,  "Express":12000, "Urgente":16000, lluvia:2000 },
+        "Metropolitana":            { "Estándar":7000,  "Express":10500, "Urgente":14000, lluvia:2000 },
+        "Suroriente":               { "Estándar":10000, "Express":14000, "Urgente":18000, lluvia:2500 },
+        "Suroccidente":             { "Estándar":10500, "Express":14500, "Urgente":18500, lluvia:2500 },
+      },
+      "Suroriente": {
+        "Riomar":                   { "Estándar":11000, "Express":15000, "Urgente":19000, lluvia:2500 },
+        "Norte – Centro Histórico": { "Estándar":10500, "Express":14500, "Urgente":18500, lluvia:2500 },
+        "Metropolitana":            { "Estándar":10000, "Express":14000, "Urgente":18000, lluvia:2500 },
+        "Suroriente":               { "Estándar":7500,  "Express":11000, "Urgente":14500, lluvia:2500 },
+        "Suroccidente":             { "Estándar":9500,  "Express":13500, "Urgente":17500, lluvia:2500 },
+      },
+      "Suroccidente": {
+        "Riomar":                   { "Estándar":12000, "Express":16000, "Urgente":20000, lluvia:2500 },
+        "Norte – Centro Histórico": { "Estándar":11500, "Express":15500, "Urgente":19500, lluvia:2500 },
+        "Metropolitana":            { "Estándar":10500, "Express":14500, "Urgente":18500, lluvia:2500 },
+        "Suroriente":               { "Estándar":9500,  "Express":13500, "Urgente":17500, lluvia:2500 },
+        "Suroccidente":             { "Estándar":7500,  "Express":11000, "Urgente":14500, lluvia:2500 },
+      },
+    },
+    "Soledad": {
+      "Soledad Norte": {
+        "Soledad Norte":      { "Estándar":5500, "Express":8500,  "Urgente":12000, lluvia:1500 },
+        "Soledad Centro":     { "Estándar":6500, "Express":9500,  "Urgente":13000, lluvia:1500 },
+        "Soledad Sur":        { "Estándar":8000, "Express":11500, "Urgente":15000, lluvia:2000 },
+        "Soledad Industrial": { "Estándar":8500, "Express":12000, "Urgente":15500, lluvia:2000 },
+      },
+      "Soledad Centro": {
+        "Soledad Norte":      { "Estándar":6500, "Express":9500,  "Urgente":13000, lluvia:1500 },
+        "Soledad Centro":     { "Estándar":5500, "Express":8500,  "Urgente":12000, lluvia:1500 },
+        "Soledad Sur":        { "Estándar":7000, "Express":10500, "Urgente":14000, lluvia:1500 },
+        "Soledad Industrial": { "Estándar":8000, "Express":11500, "Urgente":15000, lluvia:2000 },
+      },
+      "Soledad Sur": {
+        "Soledad Norte":      { "Estándar":8000, "Express":11500, "Urgente":15000, lluvia:2000 },
+        "Soledad Centro":     { "Estándar":7000, "Express":10500, "Urgente":14000, lluvia:1500 },
+        "Soledad Sur":        { "Estándar":5500, "Express":8500,  "Urgente":12000, lluvia:1500 },
+        "Soledad Industrial": { "Estándar":7500, "Express":11000, "Urgente":14500, lluvia:2000 },
+      },
+      "Soledad Industrial": {
+        "Soledad Norte":      { "Estándar":8500, "Express":12000, "Urgente":15500, lluvia:2000 },
+        "Soledad Centro":     { "Estándar":8000, "Express":11500, "Urgente":15000, lluvia:2000 },
+        "Soledad Sur":        { "Estándar":7500, "Express":11000, "Urgente":14500, lluvia:2000 },
+        "Soledad Industrial": { "Estándar":6000, "Express":9000,  "Urgente":12500, lluvia:2000 },
+      },
+    },
+    "Entre ciudades": {
+      "BQ (cualquier zona)": {
+        "Soledad Norte/Centro":   { "Estándar":12000, "Express":16000, "Urgente":20000, lluvia:2000 },
+        "Soledad Sur/Industrial": { "Estándar":13000, "Express":17000, "Urgente":21000, lluvia:2000 },
+      },
+      "Soledad (cualquier zona)": {
+        "BQ Riomar/Norte/Centro":     { "Estándar":12000, "Express":16000, "Urgente":20000, lluvia:2000 },
+        "BQ Metropolitana":           { "Estándar":13000, "Express":17000, "Urgente":21000, lluvia:2000 },
+        "BQ Suroriente/Suroccidente": { "Estándar":14000, "Express":18000, "Urgente":22000, lluvia:2500 },
+      },
+    }
   };
 
-  /* Servicio actualmente seleccionado */
+  const ZONAS_ORIGEN = {
+    "Barranquilla":   ["Riomar","Norte – Centro Histórico","Metropolitana","Suroriente","Suroccidente"],
+    "Soledad":        ["Soledad Norte","Soledad Centro","Soledad Sur","Soledad Industrial"],
+    "Entre ciudades": ["BQ (cualquier zona)","Soledad (cualquier zona)"]
+  };
+
+  const ZONAS_DESTINO_MAP = {
+    "Barranquilla":   ["Riomar","Norte – Centro Histórico","Metropolitana","Suroriente","Suroccidente"],
+    "Soledad":        ["Soledad Norte","Soledad Centro","Soledad Sur","Soledad Industrial"],
+    "Entre ciudades": {
+      "BQ (cualquier zona)":      ["Soledad Norte/Centro","Soledad Sur/Industrial"],
+      "Soledad (cualquier zona)": ["BQ Riomar/Norte/Centro","BQ Metropolitana","BQ Suroriente/Suroccidente"]
+    }
+  };
+
+  let pasoActual     = 1;
+  let ciudadActiva   = "";
   let servicioActivo = "";
 
-  /* ============================================================
-     FORMATEAR MONEDA COP
-  ============================================================ */
   function fmt(n) {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0
-    }).format(n);
+    return new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0}).format(n);
+  }
+  function mayus(s) { return s ? s.toString().toUpperCase() : ''; }
+
+  function actualizarProgreso(paso) {
+    const pct = {1:12,2:37,3:62,4:95};
+    document.getElementById('progress-fill').style.width = pct[paso]+'%';
+    for (let i=1;i<=4;i++) {
+      const sc=document.getElementById('sc'+i), sl=document.getElementById('sl'+i);
+      sc.className='step-circle'+(i<paso?' done':i===paso?' active':'');
+      sl.className='step-label'+(i<paso?' done':i===paso?' active':'');
+      sc.textContent=i<paso?'✓':i;
+    }
   }
 
-  /* ============================================================
-     SELECCIONAR TIPO DE SERVICIO
-  ============================================================ */
-  function selectSvc(el) {
-    document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('active'));
+  function selectCiudad(el) {
+    document.querySelectorAll('.ciudad-btn').forEach(b=>b.classList.remove('active'));
     el.classList.add('active');
-    servicioActivo = el.dataset.svc;
-    document.getElementById('servicio').value = servicioActivo;
-    document.getElementById('err-servicio').style.display = 'none';
+    ciudadActiva=el.dataset.ciudad;
+    document.getElementById('ciudad').value=ciudadActiva;
+    document.getElementById('err-ciudad').style.display='none';
+    const so=document.getElementById('zona-origen');
+    so.innerHTML='<option value="">-- Selecciona zona de origen --</option>';
+    ZONAS_ORIGEN[ciudadActiva].forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;so.appendChild(o);});
+    document.getElementById('zona-destino').innerHTML='<option value="">-- Selecciona primero zona de origen --</option>';
+    document.getElementById('dir-recogida-wrap').classList.remove('visible');
+    document.getElementById('dir-entrega-wrap').classList.remove('visible');
     calcularPrecio();
   }
 
-  /* ============================================================
-     ACTUALIZAR ESTADO DE LLUVIA
-  ============================================================ */
+  function onOrigenChange() {
+    const origen=document.getElementById('zona-origen').value;
+    document.getElementById('err-origen').style.display='none';
+    const wrap=document.getElementById('dir-recogida-wrap');
+    if (origen) { wrap.classList.add('visible'); } else { wrap.classList.remove('visible'); }
+    const sd=document.getElementById('zona-destino');
+    sd.innerHTML='<option value="">-- Selecciona zona de destino --</option>';
+    document.getElementById('dir-entrega-wrap').classList.remove('visible');
+    if (!ciudadActiva||!origen) return;
+    let zonas=[];
+    if (ciudadActiva==='Entre ciudades') zonas=ZONAS_DESTINO_MAP['Entre ciudades'][origen]||[];
+    else zonas=ZONAS_DESTINO_MAP[ciudadActiva];
+    zonas.forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;sd.appendChild(o);});
+    calcularPrecio();
+  }
+
+  function onDestinoChange() {
+    const destino=document.getElementById('zona-destino').value;
+    document.getElementById('err-destino').style.display='none';
+    const wrap=document.getElementById('dir-entrega-wrap');
+    if (destino) { wrap.classList.add('visible'); } else { wrap.classList.remove('visible'); }
+    calcularPrecio();
+  }
+
+  function selectSvc(el) {
+    document.querySelectorAll('.svc-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+    servicioActivo=el.dataset.svc;
+    document.getElementById('servicio').value=servicioActivo;
+    document.getElementById('err-servicio').style.display='none';
+    calcularPrecio();
+  }
+
   function updateLluvia() {
-    const on = document.getElementById('lluvia').checked;
-    document.getElementById('lluvia-icon').textContent = on ? '🌧️' : '☀️';
-    document.getElementById('lluvia-text').textContent  = on ? 'Con lluvia' : 'Sin lluvia';
-    document.getElementById('lluvia-sub').textContent   = on ? 'Se aplicará recargo por lluvia' : 'Sin recargo adicional';
+    const on=document.getElementById('lluvia').checked;
+    document.getElementById('lluvia-text').textContent=on?'Con lluvia':'Sin lluvia';
+    document.getElementById('lluvia-sub').textContent=on?'Se aplicará recargo por lluvia':'Sin recargo adicional';
     calcularPrecio();
   }
 
-  /* ============================================================
-     CALCULAR PRECIO EN TIEMPO REAL
-  ============================================================ */
   function calcularPrecio() {
-    const zona   = document.getElementById('zona').value;
-    const svc    = servicioActivo;
-    const lluvia = document.getElementById('lluvia').checked;
-    const cont   = document.getElementById('precio-content');
-
-    if (!zona || !svc) {
-      cont.innerHTML = '<div class="precio-placeholder">Selecciona zona y tipo de servicio para ver el precio</div>';
-      return;
-    }
-
-    const base    = PRECIOS[zona][svc];
-    const recargo = lluvia ? PRECIOS[zona].lluvia : 0;
-    const total   = base + recargo;
-
-    let html = `
-      <div class="precio-row">
-        <span>Servicio ${svc}</span>
-        <span class="amount">${fmt(base)}</span>
-      </div>
-      <div class="precio-row">
-        <span>Zona: ${zona}</span>
-        <span></span>
-      </div>`;
-
-    if (lluvia) {
-      html += `
-      <div class="precio-row">
-        <span><span class="lluvia-badge">🌧️ Recargo lluvia</span></span>
-        <span class="amount">+ ${fmt(recargo)}</span>
-      </div>`;
-    }
-
-    html += `
-      <div class="precio-row total">
-        <span>Total a pagar</span>
-        <span class="amount">${fmt(total)}</span>
-      </div>`;
-
-    cont.innerHTML = html;
+    const ciudad=ciudadActiva;
+    const origen=document.getElementById('zona-origen').value;
+    const destino=document.getElementById('zona-destino').value;
+    const svc=servicioActivo;
+    const lluvia=document.getElementById('lluvia').checked;
+    const cont=document.getElementById('precio-content');
+    if (!ciudad||!origen||!destino||!svc) { cont.innerHTML='<div class="precio-placeholder">Selecciona ciudad, zonas y servicio</div>'; return; }
+    const tabla=PRECIOS[ciudad]&&PRECIOS[ciudad][origen]&&PRECIOS[ciudad][origen][destino];
+    if (!tabla) { cont.innerHTML='<div class="precio-placeholder">Combinación no disponible</div>'; return; }
+    const base=tabla[svc], rec=lluvia?tabla.lluvia:0, total=base+rec;
+    let html=`<div class="precio-row"><span>${origen} → ${destino}</span><span></span></div>
+    <div class="precio-row"><span>Servicio ${svc}</span><span class="amount">${fmt(base)}</span></div>`;
+    if (lluvia) html+=`<div class="precio-row"><span><span class="badge-lluvia">Recargo lluvia</span></span><span class="amount">+ ${fmt(rec)}</span></div>`;
+    html+=`<div class="precio-row total"><span>Total a pagar</span><span class="amount">${fmt(total)}</span></div>`;
+    cont.innerHTML=html;
   }
 
-  /* ============================================================
-     VALIDAR FORMULARIO
-  ============================================================ */
-  function validar() {
-    let ok = true;
-    const requeridos = [
-      { id: 'nombre',       err: 'err-nombre'   },
-      { id: 'telefono',     err: 'err-telefono' },
-      { id: 'dir-recogida', err: 'err-recogida' },
-      { id: 'dir-entrega',  err: 'err-entrega'  },
-      { id: 'zona',         err: 'err-zona'     },
-    ];
+  function toggleCondiciones() {
+    const btn=document.getElementById('condiciones-btn');
+    const panel=document.getElementById('condiciones-panel');
+    btn.classList.toggle('open');
+    panel.classList.toggle('visible');
+  }
 
-    requeridos.forEach(({ id, err }) => {
-      const el    = document.getElementById(id);
-      const errEl = document.getElementById(err);
-      if (!el.value.trim()) {
-        el.classList.add('invalid');
-        errEl.style.display = 'block';
-        ok = false;
-      } else {
-        el.classList.remove('invalid');
-        errEl.style.display = 'none';
-      }
-    });
+  function toggleAcepto() {
+    const cb=document.getElementById('acepto');
+    const wrap=document.getElementById('aceptar-wrap');
+    const btn=document.getElementById('btn-next');
+    if (cb.checked) { wrap.classList.add('aceptado'); btn.disabled=false; }
+    else { wrap.classList.remove('aceptado'); btn.disabled=true; }
+  }
 
-    if (!servicioActivo) {
-      document.getElementById('err-servicio').style.display = 'block';
-      ok = false;
-    } else {
-      document.getElementById('err-servicio').style.display = 'none';
+  function mostrarResumen() {
+    const ciudad=ciudadActiva;
+    const origen=document.getElementById('zona-origen').value;
+    const destino=document.getElementById('zona-destino').value;
+    const svc=servicioActivo;
+    const lluvia=document.getElementById('lluvia').checked;
+    const tabla=PRECIOS[ciudad][origen][destino];
+    const base=tabla[svc], rec=lluvia?tabla.lluvia:0, total=base+rec;
+    const indicacion=document.getElementById('dest-indicacion').value.trim();
+    const obs=document.getElementById('observaciones').value.trim();
+
+    document.getElementById('r-rem-nombre').textContent=mayus(document.getElementById('rem-nombre').value);
+    document.getElementById('r-rem-tel').textContent=document.getElementById('rem-telefono').value;
+    document.getElementById('r-dest-nombre').textContent=mayus(document.getElementById('dest-nombre').value);
+    document.getElementById('r-dest-tel').textContent=document.getElementById('dest-telefono').value;
+    document.getElementById('r-indicacion-row').style.display=indicacion?'':'none';
+    document.getElementById('r-indicacion').textContent=mayus(indicacion);
+    document.getElementById('r-ciudad').textContent=mayus(ciudad);
+    document.getElementById('r-origen').textContent=mayus(origen);
+    document.getElementById('r-recogida').textContent=mayus(document.getElementById('dir-recogida').value);
+    document.getElementById('r-destino').textContent=mayus(destino);
+    document.getElementById('r-entrega').textContent=mayus(document.getElementById('dir-entrega').value);
+    document.getElementById('r-servicio').textContent=mayus(svc);
+    document.getElementById('r-lluvia').textContent=lluvia?'SÍ':'NO';
+    document.getElementById('r-obs-row').style.display=obs?'':'none';
+    document.getElementById('r-obs').textContent=mayus(obs);
+    document.getElementById('r-total').textContent=fmt(total);
+    document.getElementById('btn-next').disabled=true;
+  }
+
+  function validarPaso(paso) {
+    let ok=true;
+    const req=(id,errId)=>{
+      const el=document.getElementById(id), err=document.getElementById(errId);
+      if (!el.value.trim()) { el.classList.add('invalid'); err.style.display='block'; ok=false; }
+      else { el.classList.remove('invalid'); err.style.display='none'; }
+    };
+    if (paso===1) { req('rem-nombre','err-rem-nombre'); req('rem-telefono','err-rem-telefono'); }
+    if (paso===2) { req('dest-nombre','err-dest-nombre'); req('dest-telefono','err-dest-telefono'); }
+    if (paso===3) {
+      if (!ciudadActiva) { document.getElementById('err-ciudad').style.display='block'; ok=false; }
+      else document.getElementById('err-ciudad').style.display='none';
+      req('zona-origen','err-origen'); req('zona-destino','err-destino');
+      req('dir-recogida','err-recogida'); req('dir-entrega','err-entrega');
+      if (!servicioActivo) { document.getElementById('err-servicio').style.display='block'; ok=false; }
+      else document.getElementById('err-servicio').style.display='none';
     }
-
     return ok;
   }
 
-  /* ============================================================
-     GENERAR NÚMERO DE REFERENCIA
-  ============================================================ */
-  function generarRef() {
-    return 'CLX-' + Date.now().toString().slice(-6);
+  function pasoSiguiente() {
+    if (pasoActual===4) { enviarFormulario(); return; }
+    if (!validarPaso(pasoActual)) return;
+    document.getElementById('paso'+pasoActual).classList.remove('visible');
+    pasoActual++;
+    document.getElementById('paso'+pasoActual).classList.add('visible');
+    actualizarProgreso(pasoActual);
+    document.getElementById('btn-back').style.display='';
+    document.getElementById('btn-next').textContent=pasoActual===4?'Enviar Solicitud':'Continuar →';
+    if (pasoActual===4) mostrarResumen();
+    window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  /* ============================================================
-     ENVIAR FORMULARIO
-     ⚠️  REEMPLAZA la URL de SCRIPT_URL con la URL de tu
-         Google Apps Script Web App una vez la despliegues.
-  ============================================================ */
+  function pasoAnterior() {
+    document.getElementById('paso'+pasoActual).classList.remove('visible');
+    pasoActual--;
+    document.getElementById('paso'+pasoActual).classList.add('visible');
+    actualizarProgreso(pasoActual);
+    if (pasoActual===1) document.getElementById('btn-back').style.display='none';
+    document.getElementById('btn-next').textContent=pasoActual===4?'Enviar Solicitud':'Continuar →';
+    if (pasoActual===4) document.getElementById('btn-next').disabled=!document.getElementById('acepto').checked;
+    else document.getElementById('btn-next').disabled=false;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function generarRef() { return 'CLX-'+Date.now().toString().slice(-6); }
+
   function enviarFormulario() {
-    if (!validar()) {
-      // Scroll suave al primer error
-      const primerError = document.querySelector('.invalid, .field-error[style*="block"]');
-      if (primerError) primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
+    const ciudad=ciudadActiva;
+    const origen=document.getElementById('zona-origen').value;
+    const destino=document.getElementById('zona-destino').value;
+    const svc=servicioActivo;
+    const lluvia=document.getElementById('lluvia').checked;
+    const tabla=PRECIOS[ciudad][origen][destino];
+    const base=tabla[svc], rec=lluvia?tabla.lluvia:0, total=base+rec;
+    const ref=generarRef();
 
-    const zona    = document.getElementById('zona').value;
-    const svc     = servicioActivo;
-    const lluvia  = document.getElementById('lluvia').checked;
-    const base    = PRECIOS[zona][svc];
-    const recargo = lluvia ? PRECIOS[zona].lluvia : 0;
-    const total   = base + recargo;
-    const ref     = generarRef();
-
-    const datos = {
-      referencia:   ref,
-      fecha:        new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' }),
-      nombre:       document.getElementById('nombre').value.trim(),
-      telefono:     document.getElementById('telefono').value.trim(),
-      barrio:       document.getElementById('barrio').value.trim() || 'N/A',
-      dirRecogida:  document.getElementById('dir-recogida').value.trim(),
-      dirEntrega:   document.getElementById('dir-entrega').value.trim(),
-      zona:         zona,
-      servicio:     svc,
-      lluvia:       lluvia ? 'Sí' : 'No',
-      observaciones: document.getElementById('observaciones').value.trim() || 'N/A',
-      valorBase:    base,
-      recargo:      recargo,
-      total:        total,
+    const datos={
+      referencia: ref,
+      fecha: new Date().toLocaleString('es-CO',{timeZone:'America/Bogota'}),
+      remNombre: mayus(document.getElementById('rem-nombre').value.trim()),
+      remTelefono: document.getElementById('rem-telefono').value.trim(),
+      destNombre: mayus(document.getElementById('dest-nombre').value.trim()),
+      destTelefono: document.getElementById('dest-telefono').value.trim(),
+      destIndicacion: mayus(document.getElementById('dest-indicacion').value.trim())||'N/A',
+      ciudad: mayus(ciudad),
+      zonaOrigen: mayus(origen),
+      zonaDestino: mayus(destino),
+      dirRecogida: mayus(document.getElementById('dir-recogida').value.trim()),
+      dirEntrega: mayus(document.getElementById('dir-entrega').value.trim()),
+      servicio: mayus(svc),
+      lluvia: lluvia?'SÍ':'NO',
+      observaciones: mayus(document.getElementById('observaciones').value.trim())||'N/A',
+      valorBase: base,
+      recargo: rec,
+      total: total,
     };
 
-    const btn = document.getElementById('btn-enviar');
-    btn.disabled    = true;
-    btn.textContent = '⏳ Enviando...';
+    const btn=document.getElementById('btn-next');
+    btn.disabled=true; btn.textContent='Enviando...';
 
-    /* ===========================================================
-       ⚠️  PASO IMPORTANTE:
-       Reemplaza la URL de abajo con la URL de tu Google Apps Script.
-       Ver instrucciones al final de este archivo.
-    =========================================================== */
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrBUEidpUDQ73B2wU9IDbts4n-Nb04_MCIx6uzltpb9QvYDz4D9zZA83649ouqdHLXiw/exec';
+    /* ⚠️ REEMPLAZA CON TU URL DE GOOGLE APPS SCRIPT */
+    const SCRIPT_URL='PEGA_AQUI_TU_URL_DEL_APPS_SCRIPT';
 
-    fetch(SCRIPT_URL, {
-      method:  'POST',
-      mode:    'no-cors',   // Necesario para Google Apps Script
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(datos),
+    fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+    .then(()=>{
+      document.getElementById('nav-btns').style.display='none';
+      document.getElementById('paso4').classList.remove('visible');
+      document.getElementById('success-ref').textContent='Referencia: '+ref;
+      document.getElementById('success-msg').style.display='block';
+      document.getElementById('progress-fill').style.width='100%';
+      for(let i=1;i<=4;i++){document.getElementById('sc'+i).className='step-circle done';document.getElementById('sc'+i).textContent='✓';document.getElementById('sl'+i).className='step-label done';}
+      window.scrollTo({top:0,behavior:'smooth'});
     })
-    .then(() => {
-      btn.style.display = 'none';
-      document.getElementById('success-ref').textContent = 'Ref: ' + ref;
-      document.getElementById('success-msg').style.display = 'block';
-      document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth' });
-    })
-    .catch(err => {
-      console.error('Error al enviar:', err);
-      btn.disabled    = false;
-      btn.textContent = '📤 Enviar Solicitud';
-      alert('Hubo un error al enviar. Verifica tu conexión o contacta a soporte.');
-    });
+    .catch(()=>{btn.disabled=false;btn.textContent='Enviar Solicitud';alert('Error al enviar. Verifica tu conexión.');});
   }
 </script>
-
-<!--
-==============================================================
-  INSTRUCCIONES PARA CONECTAR CON GOOGLE SHEETS
-==============================================================
-
-PASO 1 — Crear la hoja de cálculo
-  1. Ve a https://sheets.google.com y crea una hoja nueva.
-  2. Nómbrala "CLAEX - Solicitudes".
-  3. En la fila 1, crea estos encabezados (una por columna):
-     Referencia | Fecha | Nombre | Teléfono | Barrio |
-     Dir. Recogida | Dir. Entrega | Zona | Servicio |
-     Lluvia | Observaciones | Valor Base | Recargo | Total
-
-PASO 2 — Crear el Google Apps Script
-  1. En la hoja, ve a Extensiones > Apps Script.
-  2. Borra el código existente y pega el siguiente:
-
-  ──────────────────────────────────────────
-  function doPost(e) {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet()
-                  .getActiveSheet();
-    var data  = JSON.parse(e.postData.contents);
-
-    sheet.appendRow([
-      data.referencia,
-      data.fecha,
-      data.nombre,
-      data.telefono,
-      data.barrio,
-      data.dirRecogida,
-      data.dirEntrega,
-      data.zona,
-      data.servicio,
-      data.lluvia,
-      data.observaciones,
-      data.valorBase,
-      data.recargo,
-      data.total
-    ]);
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'OK' }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-  ──────────────────────────────────────────
-
-  3. Haz clic en "Implementar" > "Nueva implementación".
-  4. Tipo: "Aplicación web".
-  5. Ejecutar como: "Yo (tu cuenta)".
-  6. Acceso: "Cualquier usuario".
-  7. Copia la URL generada (terminará en /exec).
-  8. En este archivo HTML, reemplaza TU_SCRIPT_ID_AQUI
-     en la variable SCRIPT_URL con esa URL completa.
-
-PASO 3 — Desplegar en GitHub Pages (gratis)
-  1. Crea una cuenta en https://github.com (si no tienes).
-  2. Crea un repositorio nuevo, ponle nombre: claex-formulario.
-  3. Sube este archivo index.html al repositorio.
-  4. Ve a Settings > Pages.
-  5. En "Source", selecciona la rama "main" y carpeta raíz.
-  6. GitHub generará una URL pública tipo:
-     https://tuusuario.github.io/claex-formulario/
-  7. Comparte esa URL en WhatsApp, Instagram y Facebook.
-
-==============================================================
--->
-
 </body>
 </html>
